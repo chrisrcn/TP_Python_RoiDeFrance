@@ -4,7 +4,7 @@ import os
 import csv
 import json 
 from pathlib import Path
-
+import re
 
 
 with open('departements-france.csv', mode='r') as csv_file:
@@ -26,11 +26,24 @@ with open('departements-france.csv', mode='r') as csv_file:
 with open('liste-des-immeubles-proteges-au-titre-des-monuments-historiques.json') as jsonfile:
     monuments = json.load(jsonfile)
     for row in monuments:
+        tico = row["fields"]["tico"].replace("\'"," ")
+        def stringRoi(strTico):
+            match = re.search('Hugues|Robert|Henri|Philippe|Louis|Jean|Charles', strTico)
+            if match:
+                result = True
+            else:
+                result = False                
+            return result
         try:
-            if 'dpt_lettre' in row["fields"]:
-                fichier = open("./" + row["fields"]["reg"] + "/" + row["fields"]["dpt_lettre"] + "/" + row["fields"]["tico"].replace("\'"," ") + ".txt", "wt")
-                fichier.writelines(row["fields"]["reg"])
-                fichier.close()
+            if stringRoi(tico) is True:
+                if 'dpt_lettre' in row["fields"]:
+                    fichier = open("./" + row["fields"]["reg"] + "/" + row["fields"]["dpt_lettre"] + "/" + tico + ".txt", "wt")
+                    fichier.writelines(row["fields"]["reg"])
+                    fichier.close()
         except Exception:
-            pass                    
+            pass
+
+    
+
+                    
 
