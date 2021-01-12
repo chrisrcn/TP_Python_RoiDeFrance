@@ -53,9 +53,9 @@ with open('liste-des-immeubles-proteges-au-titre-des-monuments-historiques.json'
                     fichier.writelines("Commune : ")
                     fichier.writelines(row["fields"]["commune"] + "\n")
                     fichier.writelines("Localisation : " + "\n \t")
-                    fichier.writelines("Latitude : ")
-                    fichier.writelines(row["fields"]["coordonnees_ban"][0] + "\n \t")
                     fichier.writelines("Longitude : ")
+                    fichier.writelines(row["fields"]["coordonnees_ban"][0] + "\n \t")
+                    fichier.writelines("Latitude : ")
                     fichier.writelines(row["fields"]["coordonnees_ban"][1] + "\n")
                     fichier.close()
         except Exception:
