@@ -3,6 +3,7 @@
 import os
 import csv
 import json 
+import yaml
 from pathlib import Path
 import re
 
@@ -16,7 +17,7 @@ with open('departements-france.csv', mode='r') as csv_file:
         code_region = row["code_region"]
         if not os.path.exists(row["nom_region"]):
             os.makedirs(row["nom_region"])
-        # print(os.listdir('.'))
+        #Parcourir tous les dossiers régions dans le dossier racine
         for element in os.listdir('.'):
             # Création de dossiers département associés à leur région
             if element == row["nom_region"]:
@@ -43,9 +44,19 @@ with open('liste-des-immeubles-proteges-au-titre-des-monuments-historiques.json'
             #Vérification regex 
             if stringRoi(tico) is True:
                 if 'dpt_lettre' in row["fields"]:
-                    #Ecriture des fichiers txt
-                    fichier = open("./" + row["fields"]["reg"] + "/" + row["fields"]["dpt_lettre"] + "/" + tico + ".txt", "wt")
-                    fichier.writelines(row["fields"]["reg"])
+                    #Ecriture des fichiers yml
+                    fichier = open("./" + row["fields"]["reg"] + "/" + row["fields"]["dpt_lettre"] + "/" + tico + ".yml", "wt")
+                    fichier.writelines("Nom : ")
+                    fichier.writelines(tico + "\n")
+                    fichier.writelines("Description : ")
+                    fichier.writelines(row["fields"]["stat"].replace("\'"," ") + "\n")
+                    fichier.writelines("Commune : ")
+                    fichier.writelines(row["fields"]["commune"] + "\n")
+                    fichier.writelines("Localisation : " + "\n \t")
+                    fichier.writelines("Latitude : ")
+                    fichier.writelines(row["fields"]["coordonnees_ban"][0] + "\n \t")
+                    fichier.writelines("Longitude : ")
+                    fichier.writelines(row["fields"]["coordonnees_ban"][1] + "\n")
                     fichier.close()
         except Exception:
             pass
